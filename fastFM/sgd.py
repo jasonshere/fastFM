@@ -86,7 +86,7 @@ class FMRegression(FactorizationMachine, RegressorMixin):
 
         # The sgd solver expects a transposed design matrix in column major
         # order (csc_matrix).
-        # X = X.T  # creates a copy
+        X = X.T  # creates a copy
         X = check_array(X, accept_sparse="csc", dtype=np.float64)
 
         self.n_iter = self.n_iter + n_more_iter
