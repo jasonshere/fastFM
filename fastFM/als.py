@@ -86,7 +86,6 @@ class FMRegression(FactorizationMachine, RegressorMixin):
         self.n_iter = self.n_iter + n_more_iter
 
         if n_more_iter > 0:
-            print 'warm start'
             _check_warm_start(self, X_train)
             self.warm_start = True
 
