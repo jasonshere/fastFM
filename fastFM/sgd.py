@@ -7,7 +7,7 @@ import numpy as np
 from sklearn.base import RegressorMixin
 from .validation import check_array, check_consistent_length
 from .base import (FactorizationMachine, BaseFMClassifier,
-                   _validate_class_labels)
+                   _validate_class_labels, _check_warm_start)
 
 
 class FMRegression(FactorizationMachine, RegressorMixin):
@@ -70,7 +70,7 @@ class FMRegression(FactorizationMachine, RegressorMixin):
         self.step_size = step_size
         self.task = "regression"
 
-    def fit(self, X, y):
+    def fit(self, X, y, n_more_iter=0):
         """ Fit model with specified loss.
 
         Parameters
@@ -89,7 +89,21 @@ class FMRegression(FactorizationMachine, RegressorMixin):
         X = X.T  # creates a copy
         X = check_array(X, accept_sparse="csc", dtype=np.float64)
 
+        self.n_iter = self.n_iter + n_more_iter
+
+        if n_more_iter > 0:
+            _check_warm_start(self, X)
+            self.warm_start = True
+
         self.w0_, self.w_, self.V_ = ffm.ffm_sgd_fit(self, X, y)
+
+        if self.iter_count != 0:
+            self.iter_count = self.iter_count + n_more_iter
+        else:
+            self.iter_count = self.n_iter
+
+        # reset to default setting
+        self.warm_start = False
         return self
 
 
