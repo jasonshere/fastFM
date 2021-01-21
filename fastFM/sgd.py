@@ -7,7 +7,7 @@ import numpy as np
 from sklearn.base import RegressorMixin
 from .validation import check_array, check_consistent_length
 from .base import (FactorizationMachine, BaseFMClassifier,
-                   _validate_class_labels)
+                   _validate_class_labels, _check_warm_start)
 
 
 class FMRegression(FactorizationMachine, RegressorMixin):
@@ -92,6 +92,7 @@ class FMRegression(FactorizationMachine, RegressorMixin):
         self.n_iter = self.n_iter + n_more_iter
 
         if n_more_iter > 0:
+            _check_warm_start(self, X.T)
             self.warm_start = True
 
         self.w0_, self.w_, self.V_ = ffm.ffm_sgd_fit(self, X, y)

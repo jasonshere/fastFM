@@ -19,6 +19,8 @@ def _validate_class_labels(y):
 
 def _check_warm_start(fm, X):
     n_features = X.shape[1]
+    assert n_features == 2484
+    assert fm.w_.shape[0] == 2484
     if not fm.ignore_w_0:
         assert fm.w0_ is not None
     if not fm.ignore_w:
