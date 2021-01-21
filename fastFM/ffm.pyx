@@ -135,7 +135,7 @@ def ffm_sgd_fit(fm, X, double[:] y):
     if fm.warm_start:
         w_0 = 0 if fm.ignore_w_0 else fm.w0_
         w = np.zeros(n_features, dtype=np.float64) if fm.ignore_w else fm.w_
-        V = np.random.rand((fm.rank, n_features), dtype=np.float64)\
+        V = np.random.rand((fm.rank, n_features))\
                 if fm.rank == 0 else fm.V_
     else:
         w_0 = 0
