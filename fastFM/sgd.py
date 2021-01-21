@@ -86,13 +86,14 @@ class FMRegression(FactorizationMachine, RegressorMixin):
 
         # The sgd solver expects a transposed design matrix in column major
         # order (csc_matrix).
+        X_ = X.copy()
         X = X.T  # creates a copy
         X = check_array(X, accept_sparse="csc", dtype=np.float64)
 
         self.n_iter = self.n_iter + n_more_iter
 
         if n_more_iter > 0:
-            _check_warm_start(self, X.T)
+            _check_warm_start(self, X_)
             self.warm_start = True
 
         self.w0_, self.w_, self.V_ = ffm.ffm_sgd_fit(self, X, y)
